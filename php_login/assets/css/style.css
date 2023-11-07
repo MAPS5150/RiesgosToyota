@@ -1,0 +1,48 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+.container{
+    color: #495057;
+    background-color: #669ae5;
+    background-size: auto;
+}
+.altacceso{
+    text-align: center;
+}
+.altacceso a{
+    color: #e9ecef;
+}
+input[type="text"], input[type="password"]{
+    outline: none;
+    padding: 20px;
+    display: block;
+    width: 300px;
+    border-radius: 3px;
+    border: 1px solid #ced4da;
+    margin: 20px auto;
+}
+input[type="submit"]{
+    display: block;
+    padding: 10px;
+    color: #ced4da;
+    background: #28a745;
+    width: 320px;
+    margin: 200px auto;
+    margin-top: 0;
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+}
+input[type="submit"]:hover{
+    background-color: #6f42c1;
+}
+.login-txt{
+    text-align: center;
+}
+.signup-txt{
+    text-align: center;
+}
+
