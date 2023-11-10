@@ -37,8 +37,8 @@
             
             $sentence->execute();
 
-            echo $txtID;
-            echo "Presionaste btnAgregar";
+            // echo $txtID;
+            // echo "Presionaste btnAgregar";
         break;
         case "btnModificar":
             $sentence = $pdo->prepare("UPDATE `anormalreports` SET 
@@ -46,26 +46,72 @@
             Telefono=:Telefono,
             Supervisor=:Supervisor,
             Ubicacion=:Ubicacion,
-            Foto=:Foto, 
-            Problema=:Problema WHERE 
-            ID=:ID");
+            Problema=:Problema WHERE ID=:ID");
 
             $sentence->bindParam(':Turno', $txtTurno);
             $sentence->bindParam(':Telefono', $txtTelefono);
             $sentence->bindParam(':Supervisor', $txtSupervisor);
             $sentence->bindParam(':Ubicacion', $txtUbicacion);
-            $sentence->bindParam(':Foto', $txtFoto);
+            // $sentence->bindParam(':Foto', $txtFoto);
             $sentence->bindParam(':Problema', $txtProblema);
             $sentence->bindParam(':ID', $txtID);
             
             $sentence->execute();
 
+            //Recepcionaremos la fotografia, la adjuntaremos a la carpeta imagenes y despues la pasaremos a la BD
+            $Fecha = new DateTime();
+            $nombreArchivo = ($txtFoto!="")?$Fecha->getTimestamp()."_".$_FILES["txtFoto"]["name"]:"cieloGuanajuato.jpg";
+            
+            $tmpFoto = $_FILES["txtFoto"]["tmp_name"];
+            $uploads_dir = 'imagenes';
+
+            if($tmpFoto!=""){
+                move_uploaded_file($tmpFoto,"$uploads_dir/$nombreArchivo");
+
+                $sentence = $pdo->prepare("SELECT Foto FROM `anormalreports` WHERE ID=:ID");
+                $sentence->bindParam(':ID', $txtID);
+                
+                $sentence->execute();
+
+                $empleado = $sentence->fetch(PDO::FETCH_LAZY);
+                print_r($empleado);
+
+                // se verifica que exista la fotografia dentro de la carpeta imagenes y se elimina
+                if(isset($empleado["Foto"])){
+                    if(file_exists("imagenes/".$empleado["Foto"])){
+                        unlink("imagenes/".$empleado["Foto"]);
+                    }
+                }
+
+                // actualizacion de la fotografia
+                $sentence = $pdo->prepare("UPDATE `anormalreports` SET Foto=:Foto WHERE ID=:ID");
+                $sentence->bindParam(':Foto', $nombreArchivo);
+                $sentence->bindParam(':ID', $txtID);
+                $sentence->execute();
+
+            }
+
             header('Location: reports.php');
 
-            echo $txtID;
-            echo "Presionaste btnModificar";
+            // echo $txtID;
+            // echo "Presionaste btnModificar";
         break;
         case "btnEliminar":
+            $sentence = $pdo->prepare("SELECT Foto FROM `anormalreports` WHERE ID=:ID");
+            $sentence->bindParam(':ID', $txtID);
+            
+            $sentence->execute();
+
+            $empleado = $sentence->fetch(PDO::FETCH_LAZY);
+            print_r($empleado);
+
+            // se verifica que exista la fotografia dentro de la carpeta imagenes y se elimina
+            if(isset($empleado["Foto"])){
+                if(file_exists("imagenes/".$empleado["Foto"])){
+                    unlink("imagenes/".$empleado["Foto"]);
+                }
+            }
+
             $sentence = $pdo->prepare("DELETE FROM `anormalreports` WHERE ID=:ID");
             $sentence->bindParam(':ID', $txtID);
             
@@ -73,12 +119,12 @@
 
             header('Location: reports.php');
 
-            echo $txtID;
-            echo "Presionaste btnEliminar";
+            // echo $txtID;
+            // echo "Presionaste btnEliminar";
         break;
         case "btnCancelar":
-            echo $txtID;
-            echo "Presionaste btnCancelar";
+            // echo $txtID;
+            // echo "Presionaste btnCancelar";
         break;
     }
 
@@ -107,38 +153,63 @@
 
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
-            <label for="">ID:</label>
-            <input type="text" name="txtID" value="<?php echo $txtID;?>" placeholder="" id="txtID" require="">
-            <br>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Reportes</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <!-- El formulario esta contenido dentro del siguiente modal -->
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <!-- para ocultar el ID hay que comentar la linea siguiente y el type del input cambiarlo a hidden -->
+                                <label for="">ID:</label> 
+                                <input type="text" name="txtID" required value="<?php echo $txtID;?>" placeholder="" id="txtID" require="">
+                                <br>
 
-            <label for="">Turno:</label>
-            <input type="text" name="txtTurno" value="<?php echo $txtTurno;?>" placeholder="" id="txtTurno" require="">
-            <br>
+                                <label for="">Turno:</label>
+                                <input type="text" name="txtTurno" required value="<?php echo $txtTurno;?>" placeholder="" id="txtTurno" require="">
+                                <br>
 
-            <label for="">Teléfono:</label>
-            <input type="text" name="txtTelefono" value="<?php echo $txtTelefono;?>" placeholder="" id="txtTelefono" require="">
-            <br>
+                                <label for="">Teléfono:</label>
+                                <input type="text" name="txtTelefono" required value="<?php echo $txtTelefono;?>" placeholder="" id="txtTelefono" require="">
+                                <br>
 
-            <label for="">Supervisor:</label>
-            <input type="text" name="txtSupervisor" value="<?php echo $txtSupervisor;?>" placeholder="" id="txtSupervisor" require="">
-            <br>
+                                <label for="">Supervisor:</label>
+                                <input type="text" name="txtSupervisor" required value="<?php echo $txtSupervisor;?>" placeholder="" id="txtSupervisor" require="">
+                                <br>
 
-            <label for="">Ubicación:</label>
-            <input type="text" name="txtUbicacion" value="<?php echo $txtUbicacion;?>" placeholder="" id="txtUbicacion" require="">
-            <br>
+                                <label for="">Ubicación:</label>
+                                <input type="text" name="txtUbicacion" required value="<?php echo $txtUbicacion;?>" placeholder="" id="txtUbicacion" require="">
+                                <br>
 
-            <label for="">Foto:</label>
-            <input type="file" accept="image/*" name="txtFoto" value="<?php echo $txtFoto;?>" placeholder="" id="txtFoto" require="">
-            <br>
+                                <label for="">Foto:</label>
+                                <input type="file" accept="image/*" name="txtFoto" value="<?php echo $txtFoto;?>" placeholder="" id="txtFoto" require="">
+                                <br>
 
-            <label for="">Problema:</label>
-            <input type="text" name="txtProblema" value="<?php echo $txtProblema;?>" placeholder="" id="txtProblema" require="">
-            <br>
+                                <label for="">Problema:</label>
+                                <input type="text" name="txtProblema" required value="<?php echo $txtProblema;?>" placeholder="" id="txtProblema" require="">
+                                <br>
 
-            <button value="btnAgregar" type="submit" name="accion">Agregar</button>
-            <button value="btnModificar" type="submit" name="accion">Modificar</button>
-            <button value="btnEliminar" type="submit" name="accion">Eliminar</button>
-            <button value="btnCancelar" type="submit" name="accion">Cancelar</button>
+                                <button value="btnAgregar" type="submit" name="accion">Agregar</button>
+                                <button value="btnModificar" type="submit" name="accion">Modificar</button>
+                                <button value="btnEliminar" type="submit" name="accion">Eliminar</button>
+                                <button onclick="location.href=" value="btnCancelar" type="submit" name="accion">Cancelar</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Agregar reporte +
+            </button>
 
         </form>
         <div class="row">

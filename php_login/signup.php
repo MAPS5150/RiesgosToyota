@@ -41,10 +41,10 @@
     <?php endif; ?>
 
     <div class="container" style="border: 3px solid black; box-shadow: 0px 0px 20px black;">
-        <h1 class="signup-txt">SignUp</h1>
+        <h1 class="signup-txt">Crea una cuenta nueva</h1>
         
         <div class="altacceso">
-            <span>o <a href="index.php" style="text-decoration: none;">Accede a tu cuenta(LogIn)</a></span>
+            <span>o <a href="index.php" style="text-decoration: none;">Accede a tu cuenta</a></span>
         </div>
     </div>
 
