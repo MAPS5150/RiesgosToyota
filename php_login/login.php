@@ -17,7 +17,7 @@
 
         if(count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
             $_SESSION['user_id'] = $results['id'];
-            header('Location: /crudtoyota/php_login/');
+            header('Location: /crudtoyota/php_login/projectsManager/projects.php');
         } else {
             $message = 'Las contraseñas no coinciden. Vuelve a intentarlo.';
         }

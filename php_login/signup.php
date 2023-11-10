@@ -44,7 +44,7 @@
         <h1 class="signup-txt">SignUp</h1>
         
         <div class="altacceso">
-            <span>o <a href="login.php" style="text-decoration: none;">Accede a tu cuenta(LogIn)</a></span>
+            <span>o <a href="index.php" style="text-decoration: none;">Accede a tu cuenta(LogIn)</a></span>
         </div>
     </div>
 
