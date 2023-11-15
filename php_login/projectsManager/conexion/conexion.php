@@ -10,6 +10,4 @@ try{
     echo "Error de conexion".$e->getMessage();
 }
 
-
-
 ?>

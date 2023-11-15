@@ -192,15 +192,13 @@
                                 <label for="">Problema:</label>
                                 <input type="text" name="txtProblema" required value="<?php echo $txtProblema;?>" placeholder="" id="txtProblema" require="">
                                 <br>
-
-                                <button value="btnAgregar" type="submit" name="accion">Agregar</button>
-                                <button value="btnModificar" type="submit" name="accion">Modificar</button>
-                                <button value="btnEliminar" type="submit" name="accion">Eliminar</button>
-                                <button onclick="location.href=" value="btnCancelar" type="submit" name="accion">Cancelar</button>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            
+                            <button value="btnAgregar" type="submit" name="accion">Agregar</button>
+                            <button value="btnModificar" type="submit" name="accion">Modificar</button>
+                            <button value="btnEliminar" type="submit" name="accion">Eliminar</button>
+                            <button onclick="location.href=" value="btnCancelar" type="submit" name="accion">Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -214,7 +212,7 @@
         </form>
         <div class="row">
             <table class="table">
-                <thhead>
+                <thead>
                     <tr>
                         <th>ID</th>
                         <th>Foto</th>
@@ -223,8 +221,9 @@
                         <th>Supervisor</th>
                         <th>Ubicacion</th>
                         <th>Problema</th>
+                        <th>Acciones</th>
                     </tr>
-                </thhead>
+                </thead>
                 <?php foreach($listaPersonal as $personal) {?>
                     <tr>
                         <td><?php echo $personal['ID']; ?></td>
@@ -234,20 +233,20 @@
                         <td><?php echo $personal['Supervisor']; ?></td>
                         <td><?php echo $personal['Ubicacion']; ?></td>
                         <td><?php echo $personal['Problema']; ?></td>
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" name="txtID" value="<?php echo $personal['ID']; ?>">
+                                <input type="hidden" name="txtTurno" value="<?php echo $personal['Turno']; ?>">
+                                <input type="hidden" name="txtTelefono" value="<?php echo $personal['Telefono']; ?>">
+                                <input type="hidden" name="txtSupervisor" value="<?php echo $personal['Supervisor']; ?>">
+                                <input type="hidden" name="txtUbicacion" value="<?php echo $personal['Ubicacion']; ?>">
+                                <input type="hidden" name="txtFoto" value="<?php echo $personal['Foto']; ?>">
+                                <input type="hidden" name="txtProblema" value="<?php echo $personal['Problema']; ?>">
 
-                        <form action="" method="post">
-                            <input type="hidden" name="txtID" value="<?php echo $personal['ID']; ?>">
-                            <input type="hidden" name="txtTurno" value="<?php echo $personal['Turno']; ?>">
-                            <input type="hidden" name="txtTelefono" value="<?php echo $personal['Telefono']; ?>">
-                            <input type="hidden" name="txtSupervisor" value="<?php echo $personal['Supervisor']; ?>">
-                            <input type="hidden" name="txtUbicacion" value="<?php echo $personal['Ubicacion']; ?>">
-                            <input type="hidden" name="txtFoto" value="<?php echo $personal['Foto']; ?>">
-                            <input type="hidden" name="txtProblema" value="<?php echo $personal['Problema']; ?>">
-
-                            <input type="submit" value="Seleccionar" name="accion">
-                            <button value="btnEliminar" type="submit" name="accion">Eliminar</button>
-                        </form>
-
+                                <input type="submit" value="Seleccionar" name="accion">
+                                <button value="btnEliminar" type="submit" name="accion">Eliminar</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php }?>
             </table>
